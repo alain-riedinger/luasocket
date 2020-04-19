@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <LUA_PATH>..\..\lua\sources\lua53\</LUA_PATH>
+	<!-- For dynamic or static lua library linking -->
+	<!-- Uncomment one of those 2 lines -->
+    <!-- <LUALIB>lua53.lib</LUALIB> -->
+    <LUALIB>lua53-static.lib</LUALIB>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>Lua53</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="LUALIB_PATH">
+      <Value>$(LUA_PATH)$(Platform)\lib</Value>
+    </BuildMacro>
+    <BuildMacro Include="LUABIN_PATH">
+      <Value>$(LUA_PATH)$(Platform)\bin</Value>
+    </BuildMacro>
+    <BuildMacro Include="LUAINC_PATH">
+      <Value>$(LUA_PATH)$(Platform)\include</Value>
+    </BuildMacro>
+    <BuildMacro Include="LUALIB">
+      <Value>$(LUALIB)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
