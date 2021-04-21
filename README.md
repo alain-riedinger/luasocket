@@ -1,6 +1,6 @@
 # luasocket
 
-A **luasocket** module that works on Windows with lua 5.3
+A **luasocket** module that works on Windows with lua 5.3 and 5.4 (select the appropriate package in releases)
 
 So far, so good, but when you work under *Windows* it becomes really difficult to get the binaries for this *luasocket* module, as it is **C** based:
 - I need the module under *Windows*
