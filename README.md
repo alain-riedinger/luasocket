@@ -46,6 +46,49 @@ luasocket\Release\Win32
 or
 luasocket\Release\x64
 
+### Building with only VS 2022 Development kit
+
+As times are changing, I switched from the good, but oversized, Visual Studio to the _lightweight_ and versatile **VS Code**.  
+This switch implies to build C++ applications without the ease of Visual Studio: enters `MsBuild`.  
+You need to install the C++ extension for VS Code, with the Software Development kit corresponding, here for `Visual Studio 2022`.
+
+The needed modifications in the projects `.vcxproj` files are following:
+- modify the `WindowsTargetPlatformVersion` to something less constraining (one occurence)
+```xml
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+```
+- set the `PlatformToolset` to the matching Development kit (several occurences)
+```xml
+    <PlatformToolset>v143</PlatformToolset>
+```
+
+The build is done with the following command, by passing the additional arguments for the Configuration and the Target:
+- in a console, start the matching development environment (among `Win32` or `x64`)
+```batch
+"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars32.bat"
+REM OR
+"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+
+msbuild -version
+```
+- launch the build of the projects
+```batch
+MSBuild luasocket.sln /property:Configuration=Release /property:Platform=Win32
+REM OR
+MSBuild luasocket.sln /property:Configuration=Release /property:Platform=x64
+```
+
+A script does this in a shorter way:
+```batch
+Build-luasocket.cmd Win32
+OR
+Build-luasocket.cmd x64
+```
+
+The binaries are available under: `.\Release\Win32` or `.\Release\x64`
+
+
 ## Modifications made to original luasocket
 
 The original "luasocket" module code didn't build out of the box in "Visual Studio 2017", I had to make several modifications:
@@ -83,4 +126,41 @@ The **C** source code of the "luasocket" module was also not **lua 5.3 ready**, 
 #ifndef luaL_checkint
 #define luaL_checkint(L, n) ((int)luaL_checkinteger(L,n))
 #endif
+```
+
+## Correction of the `receive` error after lua 5.4.3
+
+From lua 5.4.3 on there is an error in the calls to the `receive` method:
+```
+lua54.exe: exclient.lua:10: bad argument #1 to 'receive' (string expected, got light userdata)
+stack traceback:
+        [C]: in method 'receive'
+        exclient.lua:10: in main chunk
+        [C]: in ?
+```
+
+A correction/patch has been provided in the official `luasocket` [GitHub - lunarmodules/luasocket: Network support for the Lua language](https://github.com/lunarmodules/luasocket)  
+The complete set of sources in `src` has been refreshed with the content of `luasocket-3.1.0-1.src.rock\luasocket\src\` in the rockspec of release **3.1.0**, downloaded from `luasocket-3.1.0-1.src.rock`
+
+## Basic tests with TCP connection
+
+I wrote a basic script to test a simple message over a TCP connection. There are plenty of scripts to furtherly test some more commplicated functions, 
+for instance in [luasocket/samples at master · lunarmodules/luasocket · GitHub](https://github.com/lunarmodules/luasocket/tree/master/samples)
+
+Once you have built `lua54.exe` and `luasocket`, proceed following:
+- copy the script `tcpsample.lua` to the luasocket directory: `luasocket\Release\Win32` or `luasocket\Release\x64`
+- open 2 consoles on this directory, one for the listener and the second for the client (sends a message)
+- in the listener console, launch:
+```batch
+..\..\..\lua54\x64\bin\lua54.exe -e "require('tcpsample').listen('127.0.0.1', 6060)"
+```
+- in the client console, launch:
+```batch
+..\..\..\lua54\x64\bin\lua54.exe -e "require('tcpsample').sample('127.0.0.1', 6060, 'Hello guys')"
+```
+- check that the message is correctly received in the listener console, it should look like this
+```
+TCP listen on: 127.0.0.1:6060    (Ctrl+C to quit...)
+Hello guys
+-- debug: closed
 ```
