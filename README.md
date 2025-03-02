@@ -82,7 +82,7 @@ MSBuild luasocket.sln /property:Configuration=Release /property:Platform=x64
 A script does this in a shorter way:
 ```batch
 Build-luasocket.cmd Win32
-OR
+REM OR
 Build-luasocket.cmd x64
 ```
 
@@ -145,7 +145,7 @@ The complete set of sources in `src` has been refreshed with the content of `lua
 ## Basic tests with TCP connection
 
 I wrote a basic script to test a simple message over a TCP connection. There are plenty of scripts to furtherly test some more commplicated functions, 
-for instance in [luasocket/samples at master · lunarmodules/luasocket · GitHub](https://github.com/lunarmodules/luasocket/tree/master/samples)
+for instance in [luasocket/samples at master Â· lunarmodules/luasocket Â· GitHub](https://github.com/lunarmodules/luasocket/tree/master/samples)
 
 Once you have built `lua54.exe` and `luasocket`, proceed following:
 - copy the script `tcpsample.lua` to the luasocket directory: `luasocket\Release\Win32` or `luasocket\Release\x64`
