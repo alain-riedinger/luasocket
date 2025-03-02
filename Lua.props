@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <LUA_PATH>..\..\lua\sources\lua54\</LUA_PATH>
+    <LUA_PATH>..\lua54\</LUA_PATH>
 	<!-- For dynamic or static lua library linking -->
 	<!-- Uncomment one of those 2 lines -->
     <!-- <LUALIB>lua54.lib</LUALIB> -->
